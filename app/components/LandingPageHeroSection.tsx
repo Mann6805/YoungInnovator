@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/app/components/ui/button";
 import { ArrowRight, Sparkles, Recycle } from "lucide-react";
 import { toast } from "sonner";
@@ -20,16 +21,16 @@ const HeroSection = () => {
                 <Sparkles className="h-4 w-4" />
                 Sustainable Fashion Exchange
               </div>
-              
+
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
                 Swap Your Style,{" "}
                 <span className="bg-gradient-hero bg-clip-text text-transparent">
                   Save the Planet
                 </span>
               </h1>
-              
+
               <p className="text-xl text-muted-foreground max-w-2xl">
-                Join thousands of fashion lovers exchanging clothes, reducing waste, 
+                Join thousands of fashion lovers exchanging clothes, reducing waste,
                 and discovering unique pieces. Your sustainable wardrobe starts here.
               </p>
             </div>
@@ -87,7 +88,7 @@ const HeroSection = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Floating Badge */}
                 <div className="absolute -top-3 -right-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium shadow-lg">
                   🔥 Trending

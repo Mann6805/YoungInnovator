@@ -6,7 +6,7 @@ interface UserStats {
   itemsListed: number;
   itemsSold: number;
   itemsPurchased: number;
-  favoriteItems: number;
+  //favoriteItems: number;
 }
 
 interface UserProfileProps {
@@ -14,10 +14,13 @@ interface UserProfileProps {
     name: string;
     email: string;
     image: string;
+    stats: UserStats
   };
+  
 }
 
 const UserProfile = ({ user }: UserProfileProps) => {
+  console.log(user.stats);
   return (
     <Card className="border-border/40 shadow-elegant overflow-hidden">
       <CardContent className="p-0">
@@ -66,7 +69,7 @@ const UserProfile = ({ user }: UserProfileProps) => {
                   <Package size={20} className="text-primary" />
                 </div>
                 <span className="text-2xl font-bold text-foreground">
-                  {/* {user.stats.itemsListed} */}
+                  {user.stats.itemsListed}
                 </span>
                 <span className="text-sm text-muted-foreground">
                   Items Listed
@@ -79,7 +82,7 @@ const UserProfile = ({ user }: UserProfileProps) => {
                   <ShoppingBag size={20} className="text-green-600" />
                 </div>
                 <span className="text-2xl font-bold text-foreground">
-                  {/* {user.stats.itemsSold} */}
+                  {user.stats.itemsSold}
                 </span>
                 <span className="text-sm text-muted-foreground">
                   Items Sold
@@ -92,23 +95,23 @@ const UserProfile = ({ user }: UserProfileProps) => {
                   <ShoppingBag size={20} className="text-blue-600" />
                 </div>
                 <span className="text-2xl font-bold text-foreground">
-                  {/* {user.stats.itemsPurchased} */}
+                  {user.stats.itemsPurchased}
                 </span>
                 <span className="text-sm text-muted-foreground">
                   Items Purchased
                 </span>
               </div>
 
-              {/* Favorite Items */}
+              {/* Favorite Items
               <div className="bg-card rounded-lg border border-border/40 p-4 flex flex-col items-center text-center">
                 <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mb-2">
                   <Heart size={20} className="text-red-500" />
                 </div>
                 <span className="text-2xl font-bold text-foreground">
-                  {/* {user.stats.favoriteItems} */}
+               {user.stats.favoriteItems}
                 </span>
                 <span className="text-sm text-muted-foreground">Favorites</span>
-              </div>
+              </div> */}
             </div>
 
             {/* Additional Info/Links */}

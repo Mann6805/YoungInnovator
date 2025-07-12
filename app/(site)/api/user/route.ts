@@ -21,8 +21,28 @@ export async function GET() {
             swaps:true
         }
     })
+    
+    const swappedCount = await prisma.item.count({
+    where: {
+      uploader_id: session.user.id,
+      status: 'swapped',
+    },
+  })
 
-    return NextResponse.json({ user });
+  const purchasedItems = await prisma.swap.findMany({
+    where:{
+      requester_id: session.user.id,
+      offered_item_id: null
+    }
+  })
+
+    return NextResponse.json({ user: { ...user, stats:{
+      itemsListed: user?.items.length,
+      itemsSold: swappedCount,
+      itemsPurchased: purchasedItems.length,
+    }, purchases : purchasedItems }});
+
+
   } catch (error) {
     console.error("Failed to fetch user info:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

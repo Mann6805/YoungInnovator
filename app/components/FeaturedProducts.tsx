@@ -1,3 +1,4 @@
+'use client'
 import ProductCard from "@/app/components/ui/productCard";
 import { Button } from "@/app/components/ui/button";
 import { ChevronLeft, ChevronRight, TrendingUp } from "lucide-react";
@@ -81,11 +82,7 @@ const FeaturedProducts = () => {
     }
   ];
 
-  const itemsPerView = {
-    mobile: 1,
-    tablet: 2,
-    desktop: 4
-  };
+  
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % products.length);
@@ -138,7 +135,7 @@ const FeaturedProducts = () => {
         <div className="relative">
           {/* Desktop View */}
           <div className="hidden lg:grid grid-cols-4 gap-6 animate-scale-in">
-            {products.slice(0, 4).map((product, index) => (
+            {products.slice(0, 4).map((product) => (
               <ProductCard
                 key={product.id}
                 {...product}
@@ -149,7 +146,7 @@ const FeaturedProducts = () => {
 
           {/* Tablet View */}
           <div className="hidden md:grid lg:hidden grid-cols-2 gap-6 animate-scale-in">
-            {products.slice(0, 2).map((product, index) => (
+            {products.slice(0, 2).map((product) => (
               <ProductCard
                 key={product.id}
                 {...product}

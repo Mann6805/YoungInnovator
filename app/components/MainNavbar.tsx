@@ -11,8 +11,10 @@ import {
   NavigationMenuContent,
 } from "@/app/components/Navbar";
 import { cn } from "@/app/lib/utils";
+import { authClient } from "@/app/lib/auth-client";
 
 const MainNavbar = () => {
+  const { data: session } = authClient.useSession();
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -61,17 +63,17 @@ const MainNavbar = () => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
-                {/* <Link href="/"> */}
-                  <NavigationMenuLink>How It Works</NavigationMenuLink>
-                {/* </Link> */}
-              </NavigationMenuItem>
+              <>
+                {/* 
+                  <NavigationMenuItem>
+                    <NavigationMenuLink>How It Works</NavigationMenuLink>
+                  </NavigationMenuItem>
 
-              <NavigationMenuItem>
-                {/* <Link href="/"> */}
-                  <NavigationMenuLink>About</NavigationMenuLink>
-                {/* </Link> */}
-              </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink>About</NavigationMenuLink>
+                  </NavigationMenuItem>
+                */}
+              </>
             </NavigationMenuList>
           </NavigationMenu>
 
@@ -86,24 +88,35 @@ const MainNavbar = () => {
               />
             </div>
 
-            <Button variant="ghost" size="icon" className="relative">
+            {/* <Button variant="ghost" size="icon" className="relative">
               <ShoppingBag className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 h-4 w-4 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
                 0
               </span>
-            </Button>
+            </Button> */}
 
-            <Button variant="ghost" size="icon" className="lg:hidden">
+            {/* <Button variant="ghost" size="icon" className="lg:hidden">
               <Search className="h-5 w-5" />
-            </Button>
+            </Button> */}
 
             <div className="hidden md:flex items-center space-x-2">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/login">Login</Link>
-              </Button>
-              <Button variant="hero" size="sm" asChild>
-                <Link href="/signup">Sign Up</Link>
-              </Button>
+              {session ? (
+                <Button variant="hero" size="sm" asChild>
+                  <Link href="/dashboard" className="flex items-center gap-2">
+                    <User className="h-4 w-4" /> {/* <-- This is the user icon */}
+                    <span className="text-sm font-medium">{session.user?.name ?? "Dashboard"}</span>
+                  </Link>
+                </Button>
+              ) : (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href="/login">Login</Link>
+                  </Button>
+                  <Button variant="hero" size="sm" asChild>
+                    <Link href="/signup">Sign Up</Link>
+                  </Button>
+                </>
+              )}
             </div>
 
             <Button variant="outline" size="icon" className="md:hidden">

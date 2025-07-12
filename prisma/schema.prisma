@@ -126,7 +126,7 @@ model Item {
   status          ItemStatus    @default(available)
   current_swap_id String?       @unique
   created_at      DateTime      @default(now())
-
+  points_offered  Int?
   uploader        User   @relation("UploaderItems", fields: [uploader_id], references: [id])
   currentSwap     Swap?  @relation("CurrentSwap", fields: [current_swap_id], references: [swap_id])
   requestedInSwap Swap[] @relation("RequestedItem")
@@ -138,7 +138,6 @@ model Swap {
   item_requested_id String
   requester_id      String
   offered_item_id   String?
-  points_offered    Int?
   status            SwapStatus
   created_at        DateTime   @default(now())
   completed_at      DateTime?

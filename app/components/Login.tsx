@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -8,7 +9,6 @@ import * as z from "zod";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
-import { Label } from "@/app/components/ui/label";
 import {
   Card,
   CardContent,
@@ -24,6 +24,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/app/components/ui/form";
+import { authClient } from "@/app/lib/auth-client";
+import { toast } from "sonner";
+
+import { useRouter } from "next/navigation";
+import { OnGoogleLogin } from "@/app/lib/google";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -34,6 +39,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter()
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -43,9 +49,20 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (data: LoginForm) => {
-    console.log("Login attempt:", data);
-    // Handle login logic here
+  const onSubmit = async(formData: LoginForm) => {
+    console.log("Login attempt:", formData);
+    const {email,password}=formData
+
+    const { data, error } = await authClient.signIn.email({
+        email,
+        password,
+        callbackURL: "/",
+}, {
+     onSuccess: (ctx) => {
+      toast.success('Login success!')
+      router.push('/')
+    },
+})
   };
 
   return (
@@ -139,13 +156,7 @@ const Login = () => {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
-              {/* <Link
-                to="/signup"
-                className="text-primary hover:text-primary/80 font-medium transition-colors"
-              >
-                Sign up
-              </Link> */}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/signup"
                 className="text-primary hover:text-primary/80 font-medium transition-colors"
@@ -167,12 +178,9 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <Button variant="outline" className="w-full">
+            <div className="mt-4">
+              <Button variant="outline" className="w-full" onClick={()=>OnGoogleLogin()}>
                 Google
-              </Button>
-              <Button variant="outline" className="w-full">
-                Facebook
               </Button>
             </div>
           </div>

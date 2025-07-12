@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -26,6 +27,13 @@ import {
 } from "@/app/components/ui/form";
 import { Checkbox } from "@/app/components/ui/checkbox";
 
+import { authClient } from "@/app/lib/auth-client";
+import { toast } from "sonner";
+
+import { useRouter } from "next/navigation";
+import { OnGoogleLogin } from "@/app/lib/google";
+
+
 const signupSchema = z
   .object({
     firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -51,6 +59,8 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const router = useRouter()
+
   const form = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -63,9 +73,26 @@ const Signup = () => {
     },
   });
 
-  const onSubmit = (data: SignupForm) => {
-    console.log("Signup attempt:", data);
-    // Handle signup logic here
+  const onSubmit = async (formData: SignupForm) => {
+    console.log("Signup attempt:", formData);
+    const { data, error } = await authClient.signUp.email({
+        'email':formData.email,
+        'password':formData.password,
+        'name':formData.firstName+' '+formData.lastName,
+        callbackURL: "/" // A URL to redirect to after the user verifies their email (optional)
+    }, {
+        onRequest: (ctx) => {
+            //show loading
+        },
+        onSuccess: (ctx) => {
+          toast.success('Signup success!')
+          router.push('/')
+        },
+        onError: (ctx) => {
+            // display the error message
+            toast.error(ctx.error.message);
+        },
+});
   };
 
   return (
@@ -274,12 +301,9 @@ const Signup = () => {
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <Button variant="outline" className="w-full">
+            <div className="mt-4">
+              <Button variant="outline" className="w-full" onClick={()=>OnGoogleLogin()}>
                 Google
-              </Button>
-              <Button variant="outline" className="w-full">
-                Facebook
               </Button>
             </div>
           </div>
